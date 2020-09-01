@@ -26,10 +26,11 @@ public class Arithmetic {
                 stack.push(exp);
             }else if(exp == ')' && !stack.isEmpty()) {
                 stack.pop();
+                isBalanced = true;
+            }else if(exp == ')' && stack.isEmpty()){
+                isBalanced = false;
             }          
         }
-        
-        isBalanced = stack.isEmpty();
         return isBalanced;
     }
         
