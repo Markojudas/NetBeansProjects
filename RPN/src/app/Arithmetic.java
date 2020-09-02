@@ -31,12 +31,14 @@ public class Arithmetic {
             //it will determine whether the expression is properly formed.
             if(exp == '('){
                 stack.push(exp);
-            }else if(exp == ')' && !stack.isEmpty()) {
-                stack.pop();
-                isBalanced = true;
-            }else if(exp == ')' && stack.isEmpty()){
-                isBalanced = false;
-            }          
+            }else if(exp == ')'){
+                if(!stack.isEmpty()){
+                    stack.pop();
+                    isBalanced = true;
+                }else{
+                    isBalanced = false;
+                }                  
+            }               
         }
         return isBalanced;
     }
@@ -52,9 +54,9 @@ public class Arithmetic {
                 postFix += exp;
             }else if(exp == '('){
                 charStack.push(exp);
-            }else if(exp == ')' && !charStack.isEmpty()){
+            }else if(exp == ')' && !charStack.isEmpty()){                
                 while(charStack.pop() != '(')
-                postFix += charStack.pop();
+                    postFix += charStack.pop();                
             }
         }
         return postFix;

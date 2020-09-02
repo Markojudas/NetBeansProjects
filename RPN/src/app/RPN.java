@@ -11,7 +11,7 @@ public class RPN {
         
         //Array of Strings storing the given arithmetic expression
         String s[] =    {"5 + ) * ( 2",
-                        "2 + ( - 3 * 5)",
+                        "2 + ( - 3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9"
