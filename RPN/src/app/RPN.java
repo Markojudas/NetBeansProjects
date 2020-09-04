@@ -1,4 +1,7 @@
 package app;
+
+import java.util.Arrays;
+
 /*
 This program will use the concept of stack.
 It will first determine if a given arithmatic expression is properly formed
@@ -18,19 +21,21 @@ public class RPN {
                         };
         //declaring & initiating a counter for output purposes
         int counter =0;
-        
+                
         //traversing through the array to start evaluating each String
         //creating an instance of the Arithmetic class for each String
-        for(int i = 0; i < s.length; i++){
-            Arithmetic a = new Arithmetic(s[i]);
+        for (String expression : s) {
+            Arithmetic a = new Arithmetic(expression);
             counter++;
             
-            if(a.isBalanced(s[i])){
-                System.out.println(counter + ". Expression " + s[i] + " is Balanced");
-                System.out.println("\tThe postfix expression thus far is: " + a.postFixExpression(s[i]) + "\n");
-            }else{
+            if (a.isBalanced(expression)) {
+                System.out.println(counter + ". Expression " + expression + " is Balanced");
+                System.out.println("\tThe postfix expression now is: " + a.postFixExpression(expression) + "\n");
+            } else {
                 System.out.println(counter + ". Expression is not Balanced\n");
             }
+
+            //System.out.println(Arrays.toString(a.postFixExpression(expression)));
         }
         
         
