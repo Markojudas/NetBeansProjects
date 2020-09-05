@@ -47,10 +47,11 @@ public class Arithmetic {
         //Method to convert the balanced infix expression into postfix
         //method is accepting the String and then creating a string array to 
         //break the string by the space to keep in account the double digit numbers
+        //using the cutStr() method
         
         Stack<String> stack = new Stack<>();
         postFix = "";
-        String[] cutStr = inFix.split(" ");
+        String[] cutStr = cutStr(inFix);
         
         //enhance for-loop to traverse through string array
         for (String element : cutStr) {           
@@ -118,13 +119,31 @@ public class Arithmetic {
         }       
     }
     
+    
+    
     public int evaluateRPN(String postFix){
+        
+        /*
+        Method to evalute the postFix expression
+        It accepts the postFix String and then calls the Cut String method to
+        create a String array with each operand and operator ignoring the spaces.
+        Used to keep in account the double digit numbers.
+        */
         Stack<Integer> result = new Stack<>();
-        String[] cutStr = postFix.split(" ");
+        String[] cutStr = cutStr(postFix);
+        
         int t1 = 0;
         int t2 = 0;
         
-        for (String x : cutStr) {
+        /*
+        Traversing through the String array.
+        If the token is not one of the operators then it is a number.
+        If the token is a number then it's converted into an int/Integer by using the parseInt method
+        then it is place into the result Stack.
+        If the token is an operator it poops the two upper most elements on the Stack
+        Then it performs the arithmetic operation depending on the operator.
+        */
+         for (String x : cutStr) {
             if(!x.equals("+") && !x.equals("-") && !x.equals("*") && !x.equals("/")
                     && !x.equals("%")){
                 result.push(Integer.parseInt(x));
@@ -165,6 +184,16 @@ public class Arithmetic {
     }
     
     public String getPostFix(){
+        //Method to access the postFix varible from another class
+        
         return postFix;
-    }            
+    }
+    
+    public static String[] cutStr(String x){
+        //Method to split the String to ignore the spaces
+        
+        String[] cutStr = x.split(" ");
+        
+        return cutStr;
+    }
 }

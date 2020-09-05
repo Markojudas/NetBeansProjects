@@ -19,12 +19,12 @@ public class RPN {
 
     public static void main(String[] args) {
         
-        //Array of Strings storing the given arithmetic expression
+        //Array of Strings with the given arithmetic expression
         String s[] =    {"5 + ) * ( 2",
                         "2 + ( -3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20) ) - 25",
-                        "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9"
+                        "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9",
                         };
         //declaring & initiating a counter for output purposes
         int counter =0;
@@ -35,12 +35,21 @@ public class RPN {
             Arithmetic a = new Arithmetic(expression);
             counter++;
             
+            /*
+            If the expression is balanced then it will convert the expression
+            into postFix and evaluate the postFix expression, printing the result of both
+            conversation and evaluation.
+            Otherwise, it will print out that it is not balanced
+            */
             if (a.isBalanced(expression)) {
                 System.out.println(counter + ". Expression " + expression + " is Balanced");
+                
                 a.postFixExpression(expression);
                 String postFix = a.getPostFix();
+                int result = a.evaluateRPN(postFix);
+                
                 System.out.println("\tThe postfix expression is: " + postFix);
-                System.out.println("\tThe answer to the expression is: " + a.evaluateRPN(postFix) + "\n");
+                System.out.println("\tThe answer to the expression is: " + result + "\n");
                 
             } else {
                 System.out.println(counter + ". Expression is not Balanced\n");
