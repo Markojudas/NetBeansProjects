@@ -53,34 +53,31 @@ public class Arithmetic {
         String[] cutStr = inFix.split(" ");
         
         //enhance for-loop to traverse through string array
-        for (String element : cutStr) {
-           
+        for (String element : cutStr) {           
             /*
              *I am using the equals() method to hit the operands/numbers
              *if the element in the array is ( it will be pushed into the stack
              *if the element in the array is ) and the stack is not empty it will pop the stack
              *if the stack is not empty it will pop the stack; if the element popped is NOT (
              *it will be appended into the postFix string.
-             */
-            
+             */          
             if(!element.equals("+") && !element.equals("-") && !element.equals("*") 
                     && !element.equals("/") && !element.equals("%")
                     && !element.equals("(") && !element.equals(")"))
             {
-                postFix += element;
+                postFix += element + " ";
             }else if(element.equals("(")){
                 stack.push(element);
             }else if(element.equals(")")){
                 while(!stack.isEmpty()){
                     String t = stack.pop();
                     if(!t.equals("(")){
-                        postFix += t;
+                        postFix += t + " ";
                     }else{
                         break;
                     }
                 }            
-            }
-            
+            }           
             /*
              *If the element in the array is any of the operators and the stack
              *is empty it will be pushed into the array
@@ -90,7 +87,6 @@ public class Arithmetic {
              *with the element from the array; using the precedence() method.
              *if the element form the array is of higher or equal it will be pushed
              */
-
             else if(element.equals("+") || element.equals("-") || element.equals("*") 
                     || element.equals("/") || element.equals("%")){
                 
@@ -108,7 +104,7 @@ public class Arithmetic {
                                 stack.push(t);
                                 break;
                             }else{
-                                postFix += t;
+                                postFix += t + " ";
                             }
                         }
                     }
@@ -118,12 +114,48 @@ public class Arithmetic {
         }
         //if the stack is not empty it will pop all the elements into the postFix string
         while(!stack.isEmpty()){
-            postFix += stack.pop();
+            postFix += stack.pop() + " ";
         }       
     }
     
-    public static int precedence(String x){
+    public int evaluateRPN(String postFix){
+        Stack<Integer> result = new Stack<>();
+        String[] cutStr = postFix.split(" ");
+        int t1 = 0;
+        int t2 = 0;
         
+        for (String x : cutStr) {
+            if(!x.equals("+") && !x.equals("-") && !x.equals("*") && !x.equals("/")
+                    && !x.equals("%")){
+                result.push(Integer.parseInt(x));
+            }else{
+                t1 = result.pop();
+                t2 = result.pop();
+                switch (x) {
+                    case "+":
+                        result.push(t2 + t1);
+                        break;
+                    case "-":
+                        result.push(t2 - t1);
+                        break;
+                    case "*":
+                        result.push(t2 * t1);
+                        break;
+                    case "/":
+                        result.push(t2 /  t1);
+                        break;
+                    case "%":
+                        result.push(t2 % t1);
+                        break;
+                    default:
+                        break;
+                }
+            }           
+        }
+        return result.pop(); 
+    }
+    
+    public static int precedence(String x){       
         //method returning either 1 or 2 setting the precedence of the operators
         
         if(x.equals("+")|| x.equals("-")){
@@ -134,8 +166,5 @@ public class Arithmetic {
     
     public String getPostFix(){
         return postFix;
-    }
-        
-        
-    
+    }            
 }

@@ -1,7 +1,14 @@
+/*
+ASSIGNMNET 1
+
+Programmer: Jose R Hernandez
+Course: Data Structures 
+Term: Fall 2020
+PantherID: 1398700
+
+*/
+
 package app;
-
-import java.util.Arrays;
-
 /*
 This program will use the concept of stack.
 It will first determine if a given arithmatic expression is properly formed
@@ -14,7 +21,7 @@ public class RPN {
         
         //Array of Strings storing the given arithmetic expression
         String s[] =    {"5 + ) * ( 2",
-                        "2 + ( - 3 * 5 )",
+                        "2 + ( -3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9"
@@ -32,15 +39,12 @@ public class RPN {
                 System.out.println(counter + ". Expression " + expression + " is Balanced");
                 a.postFixExpression(expression);
                 String postFix = a.getPostFix();
-                System.out.println("\tThe postfix expression is: " + postFix + "\n");
+                System.out.println("\tThe postfix expression is: " + postFix);
+                System.out.println("\tThe answer to the expression is: " + a.evaluateRPN(postFix) + "\n");
+                
             } else {
                 System.out.println(counter + ". Expression is not Balanced\n");
             }
-
-            //System.out.println(Arrays.toString(a.postFixExpression(expression)));
-        }
-        
-        
-    }
-    
+        }                
+    }    
 }
