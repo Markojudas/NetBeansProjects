@@ -30,7 +30,9 @@ public class RPN {
             
             if (a.isBalanced(expression)) {
                 System.out.println(counter + ". Expression " + expression + " is Balanced");
-                System.out.println("\tThe postfix expression now is: " + a.postFixExpression(expression) + "\n");
+                a.postFixExpression(expression);
+                String postFix = a.getPostFix();
+                System.out.println("\tThe postfix expression is: " + postFix + "\n");
             } else {
                 System.out.println(counter + ". Expression is not Balanced\n");
             }

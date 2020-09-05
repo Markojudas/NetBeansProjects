@@ -1,18 +1,17 @@
 package app;
 //Arithmetic class where the 3 methods are implemented 
 
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Arithmetic {
     
-    public String inFix;
+    private String inFix;
+    private String postFix;
     
     //constructor that calls the isBalanced() method to determine
     // if the paranthesis are balanced
     public Arithmetic(String inFix){
-        this.inFix = inFix;
-              
+        this.inFix = inFix;             
     }
     
     public boolean isBalanced(String inFix){
@@ -43,115 +42,99 @@ public class Arithmetic {
         }
         return isBalanced;
     }
-    public String postFixExpression(String inFix){
-        Stack<String> charStack = new Stack<>();
-        String postFix = "";
-        String[] cutStr = inFix.split(" ");
-        //char e[] = inFix.toCharArray(); -> need to change the loop to e.length
+    
+    public void postFixExpression(String inFix){
+        //Method to convert the balanced infix expression into postfix
+        //method is accepting the String and then creating a string array to 
+        //break the string by the space to keep in account the double digit numbers
         
+        Stack<String> stack = new Stack<>();
+        postFix = "";
+        String[] cutStr = inFix.split(" ");
+        
+        //enhance for-loop to traverse through string array
         for (String element : cutStr) {
-            if(!element.equals("+") && !element.equals("-") && !element.equals("*") && !element.equals("/") && !element.equals("%")
+           
+            /*
+             *I am using the equals() method to hit the operands/numbers
+             *if the element in the array is ( it will be pushed into the stack
+             *if the element in the array is ) and the stack is not empty it will pop the stack
+             *if the stack is not empty it will pop the stack; if the element popped is NOT (
+             *it will be appended into the postFix string.
+             */
+            
+            if(!element.equals("+") && !element.equals("-") && !element.equals("*") 
+                    && !element.equals("/") && !element.equals("%")
                     && !element.equals("(") && !element.equals(")"))
             {
                 postFix += element;
             }else if(element.equals("(")){
-                charStack.push(element);
+                stack.push(element);
             }else if(element.equals(")")){
-                while(!charStack.isEmpty()){
-                    String t = charStack.pop();
+                while(!stack.isEmpty()){
+                    String t = stack.pop();
                     if(!t.equals("(")){
                         postFix += t;
                     }else{
                         break;
                     }
-                }
-            }else if(element.equals("+") || element.equals("-") || element.equals("*") || element.equals("/") || element.equals("%")){
-                if(charStack.isEmpty()){
-                    charStack.push(element);
+                }            
+            }
+            
+            /*
+             *If the element in the array is any of the operators and the stack
+             *is empty it will be pushed into the array
+             *if the stack is not empty it will pop the stack
+             *if the element element popped is ( it will be pushed into the stack
+             *if the element poppped is an operand it will be compared precedence
+             *with the element from the array; using the precedence() method.
+             *if the element form the array is of higher or equal it will be pushed
+             */
+
+            else if(element.equals("+") || element.equals("-") || element.equals("*") 
+                    || element.equals("/") || element.equals("%")){
+                
+                if(stack.isEmpty()){
+                    stack.push(element);
                 }else{
-                    while(!charStack.isEmpty()){
-                        String t = charStack.pop();
+                    while(!stack.isEmpty()){
+                        String t = stack.pop();
                         if(t.equals("(")){
-                            charStack.push(t);
+                            stack.push(t);
                             break;
-                        }else if(t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/") || t.equals("%")){
+                        }else if(t.equals("+") || t.equals("-") || t.equals("*")
+                                || t.equals("/") || t.equals("%")){
                             if(precedence(t) < precedence(element)){
-                                charStack.push(t);
+                                stack.push(t);
                                 break;
                             }else{
                                 postFix += t;
                             }
                         }
                     }
-                    charStack.push(element);
+                    stack.push(element);
                 }
             }
         }
-        while(!charStack.isEmpty()){
-            postFix += charStack.pop();
-        }
-        return postFix;
-        
+        //if the stack is not empty it will pop all the elements into the postFix string
+        while(!stack.isEmpty()){
+            postFix += stack.pop();
+        }       
     }
     
-  /*  
-    public String postFixExpression(String inFix){
-        Stack<Character> charStack = new Stack<>();
-        String postFix = "";
-        //String x[] = inFix.split(" ");
-        //char e[] = inFix.toCharArray(); -> need to change the loop to e.length
-        
-        for(int i=0; i < inFix.length(); i++){
-            char x = inFix.charAt(i);
-            
-            if(Character.isDigit(x)){
-               postFix += x;
-            }else if(x == '('){
-                charStack.push(x);
-            }else if(x == ')'){
-                while(!charStack.isEmpty()){
-                    char t = charStack.pop();
-                    if(t != '('){
-                        postFix += t;
-                    }else{
-                        break;
-                    }
-                }
-            }else if(x == '+' || x == '-' || x == '*' || x == '/' || x == '%'){
-                if(charStack.isEmpty()){
-                    charStack.push(x);
-                }else{
-                    while(!charStack.isEmpty()){
-                        char t = charStack.pop();
-                        if(t == '('){
-                            charStack.push(t);
-                            break;
-                        }else if(t == '+' || t == '-' || t == '*' || x == '/' || x == '%'){
-                            if(precedence(t) < precedence(x)){
-                                charStack.push(t);
-                                break;
-                            }else{
-                                postFix += t;
-                            }
-                        }
-                    }
-                    charStack.push(x);
-                }
-            }
-        }
-        while(!charStack.isEmpty()){
-            postFix += charStack.pop();
-        }
-        return postFix;
-    }
-    */
     public static int precedence(String x){
+        
+        //method returning either 1 or 2 setting the precedence of the operators
         
         if(x.equals("+")|| x.equals("-")){
             return 1;
         }else
             return 2;
-    } 
+    }
+    
+    public String getPostFix(){
+        return postFix;
+    }
         
         
     
