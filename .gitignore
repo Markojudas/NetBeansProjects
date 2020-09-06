@@ -1,4 +1,6 @@
 *.zip
 *.log
 ZIP/
+*.properties
+
 
