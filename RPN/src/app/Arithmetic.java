@@ -138,17 +138,17 @@ public class Arithmetic {
         Stack<Double> result = new Stack<>();
         String[] cutStr = cutStr(postFix);
         
-        double t1 = 0;
-        double t2 = 0;
+        double t1;
+        double t2;
         
         /*
         Traversing through the String array.
         If the token is not one of the operators then it is a number.
-        If the token is a number then it's converted into an double/Double by using the parseDouble method
+        If the token is a number then it's converted into a double/Double by using the parseDouble method
         using double to avoid rounding problems with integer division; it will also accept doubles.
         then it is place into the result Stack.
         If the token is an operator it poops the two upper most elements on the Stack
-        Then it performs the arithmetic operation depending on the operator.
+        Then it performs the arithmetic operation depending on the operator and its precedence.
         */
          for (String x : cutStr) {
             if(!x.equals("+") && !x.equals("-") && !x.equals("*") && !x.equals("/")
@@ -198,6 +198,7 @@ public class Arithmetic {
     
     public static String[] cutStr(String x){
         //Method to split the String to ignore the spaces
+        //used to keep in account numbers of more than single digit.
         
         String[] cutStr = x.split(" ");
         
