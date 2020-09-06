@@ -22,6 +22,7 @@ public class Arithmetic {
         Stack<Character> stack = new Stack<>();
         
         //reading each string one character at a time from left to right
+        if(inFix.contains("(") || inFix.contains(")")){
         for(int i=0; i < inFix.length(); i++){
             char exp = inFix.charAt(i);
             
@@ -39,6 +40,9 @@ public class Arithmetic {
                     isBalanced = false;
                 }                  
             }               
+        }
+        }else{
+            isBalanced = true;
         }
         return isBalanced;
     }
@@ -121,7 +125,7 @@ public class Arithmetic {
     
     
     
-    public int evaluateRPN(String postFix){
+    public double evaluateRPN(String postFix){
         
         /*
         Method to evalute the postFix expression
@@ -129,11 +133,11 @@ public class Arithmetic {
         create a String array with each operand and operator ignoring the spaces.
         Used to keep in account the double digit numbers.
         */
-        Stack<Integer> result = new Stack<>();
+        Stack<Double> result = new Stack<>();
         String[] cutStr = cutStr(postFix);
         
-        int t1 = 0;
-        int t2 = 0;
+        double t1 = 0;
+        double t2 = 0;
         
         /*
         Traversing through the String array.
@@ -146,7 +150,7 @@ public class Arithmetic {
          for (String x : cutStr) {
             if(!x.equals("+") && !x.equals("-") && !x.equals("*") && !x.equals("/")
                     && !x.equals("%")){
-                result.push(Integer.parseInt(x));
+                result.push(Double.parseDouble(x));
             }else{
                 t1 = result.pop();
                 t2 = result.pop();
