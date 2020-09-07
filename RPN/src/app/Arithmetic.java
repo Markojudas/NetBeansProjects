@@ -24,7 +24,6 @@ public class Arithmetic {
         //if the String has parentheses we will determine if the expression is balanced
         //by reading each string one character at a time from left to right
         //if it doesn't the expression is operand - operator - operand and is balanced
-        if(inFix.contains("(") || inFix.contains(")")){
         for(int i=0; i < inFix.length(); i++){
             char exp = inFix.charAt(i);
             
@@ -42,9 +41,6 @@ public class Arithmetic {
                     isBalanced = false;
                 }                  
             }               
-        }
-        }else{
-            isBalanced = true;
         }
         return isBalanced;
     }
