@@ -127,7 +127,7 @@ public class Arithmetic {
     
     
     
-    public double evaluateRPN(String postFix){
+    public int evaluateRPN(String postFix){
         
         /*
         Method to evalute the postFix expression
@@ -135,25 +135,24 @@ public class Arithmetic {
         create a String array with each operand and operator ignoring the spaces.
         Used to keep in account the double digit numbers.
         */
-        Stack<Double> result = new Stack<>();
+        Stack<Integer> result = new Stack<>();
         String[] cutStr = cutStr(postFix);
         
-        double t1;
-        double t2;
+        int t1;
+        int t2;
         
         /*
         Traversing through the String array.
         If the token is not one of the operators then it is a number.
-        If the token is a number then it's converted into a double/Double by using the parseDouble method
-        using double to avoid rounding problems with integer division; it will also accept doubles.
-        then it is place into the result Stack.
+        If the token is a number then it's converted into a int/Integer by using the parseInt method
+        then it is placed into the result Stack.
         If the token is an operator it poops the two upper most elements on the Stack
         Then it performs the arithmetic operation depending on the operator and its precedence.
         */
          for (String x : cutStr) {
             if(!x.equals("+") && !x.equals("-") && !x.equals("*") && !x.equals("/")
                     && !x.equals("%")){
-                result.push(Double.parseDouble(x));
+                result.push(Integer.parseInt(x));
             }else{
                 t1 = result.pop();
                 t2 = result.pop();

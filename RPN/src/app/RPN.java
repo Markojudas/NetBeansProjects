@@ -25,7 +25,7 @@ public class RPN {
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9",
-                        "5 * 5", "25 / 5", "5 + 10 * 9", "687.7 / 95", "36 / 6"};
+                        };
         
         //declaring & initiating a counter for output purposes
         int counter =0;
@@ -47,7 +47,7 @@ public class RPN {
                 
                 a.postFixExpression(expression);
                 String postFix = a.getPostFix();
-                double result = a.evaluateRPN(postFix);
+                int result = a.evaluateRPN(postFix);
                 
                 System.out.println("\tThe postfix expression is: " + postFix);
                 System.out.println("\tThe answer to the expression is: " + result + "\n");
