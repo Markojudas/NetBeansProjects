@@ -1,8 +1,9 @@
 /*
-ASSIGNMNET 1
+ASSIGNMENT 1
 
 Programmer: Jose R Hernandez
-Course: Data Structures 
+Course: COP 3530 - Data Structures
+Section: RVC 1208
 Term: Fall 2020
 PantherID: 1398700
 
@@ -43,7 +44,7 @@ public class RPN {
             Otherwise, it will print out that it is not balanced
             */
             if (a.isBalanced(expression)) {
-                System.out.println(counter + ". Expression " + expression + " is Balanced");
+                System.out.println(counter + ". Expression " + expression + " is balanced");
                 
                 a.postFixExpression(expression);
                 String postFix = a.getPostFix();
@@ -53,8 +54,9 @@ public class RPN {
                 System.out.println("\tThe answer to the expression is: " + result + "\n");
                 
             } else {
-                System.out.println(counter + ". Expression is not Balanced\n");
+                System.out.println(counter + ". Expression is not balanced\n");
             }
+            System.out.println("====================================================================\n");
         }                
     }    
 }
