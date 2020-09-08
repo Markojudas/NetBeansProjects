@@ -24,7 +24,7 @@ public class RPN {
         String s[] =    {"5 + ) * ( 2",
                         "2 + ( -3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
-                        "5 * 10 + ( 15 - 20) ) - 25",
+                        "5 * 10 + ( 15 - 20 ) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9",
                         };
         
@@ -54,7 +54,7 @@ public class RPN {
                 System.out.println("\tThe answer to the expression is: " + result + "\n");
                 
             } else {
-                System.out.println(counter + ". Expression is not balanced\n");
+                System.out.println(counter + ". Expression " + expression + " is not balanced\n");
             }
             System.out.println("====================================================================\n");
         }                

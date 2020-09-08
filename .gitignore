@@ -4,3 +4,5 @@ ZIP/
 *.properties
 
 
+/GCD/nbproject/private/
+/GCD/build/
