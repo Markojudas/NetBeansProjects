@@ -11,12 +11,12 @@ public class Arithmetic {
     private String postFix;
     private Stack<Integer> result;
     
-    //constructor that calls the isBalanced() method to determine
-    // if the paranthesis are balanced
+    //constructor
     public Arithmetic(String inFix){
         this.inFix = inFix;             
     }
     
+    //Method to test if the given expression is balanced or well formed
     public boolean isBalanced(String inFix){
         
         boolean isBalanced = false;
