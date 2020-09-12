@@ -5,8 +5,11 @@ import java.util.Stack;
 
 public class Arithmetic {
     
+    //instance varibles
+    
     private String inFix;
     private String postFix;
+    private Stack<Integer> result;
     
     //constructor that calls the isBalanced() method to determine
     // if the paranthesis are balanced
@@ -23,6 +26,8 @@ public class Arithmetic {
         
         //Reading the string one character at a time
         //Creating another string storing each character of the input string at the time
+        //if the string doesn't have any parenthesis then the expression is already balanced
+        if(inFix.contains("(") || inFix.contains(")")){    
         for(int i=0; i < inFix.length(); i++){
             char exp = inFix.charAt(i);
             
@@ -39,7 +44,13 @@ public class Arithmetic {
                 }else{
                     isBalanced = false;
                 }                  
-            }               
+            }
+            if(!stack.isEmpty()){ //if the stack is not at the end of the reading then it is not balanced
+                isBalanced = false;
+            }
+        }
+        }else{
+            isBalanced = true;
         }
         return isBalanced;
     }
@@ -122,15 +133,14 @@ public class Arithmetic {
     
     
     
-    public int evaluateRPN(String postFix){
-        
+    public void evaluateRPN(String postFix){       
         /*
         Method to evalute the postFix expression
         It accepts the postFix String and then calls the Cut String method to
         create a String array with each operand and operator ignoring the spaces.
         Used to keep in account the double digit numbers.
         */
-        Stack<Integer> result = new Stack<>();
+        result = new Stack<>();
         String[] cutStr = cutStr(postFix);
         
         int t1;
@@ -172,7 +182,6 @@ public class Arithmetic {
                 }
             }           
         }
-        return result.pop(); 
     }
     
     public static int precedence(String x){       
@@ -185,15 +194,17 @@ public class Arithmetic {
     }
     
     public String getPostFix(){
-        //Method to access the postFix varible from another class
-        
+        //Method to access the postFix varible from another class        
         return postFix;
+    }
+    
+    public Stack<Integer> getResult(){
+        return result;
     }
     
     public static String[] cutStr(String x){
         //Method to split the String to ignore the spaces
-        //used to keep in account numbers of more than single digit.
-        
+        //used to keep in account numbers of more than single digit.        
         String[] cutStr = x.split(" ");
         
         return cutStr;

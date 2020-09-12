@@ -26,6 +26,9 @@ public class RPN {
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20 ) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9",
+                        "10 + 30 * 5",
+                        "( 30 * ( 100 - 4 ) + ( 20 / 20 - 5 ) + 65",
+                        "( 50 + 100 ) / ( ( 15 - 20 ) * 25 )"
                         };
         
         //declaring & initiating a counter for output purposes
@@ -47,15 +50,22 @@ public class RPN {
                 System.out.println(counter + ". Expression " + expression + " is balanced");
                 
                 a.postFixExpression(expression);
-                String postFix = a.getPostFix();
-                int result = a.evaluateRPN(postFix);
-                
+                String postFix = a.getPostFix();              
                 System.out.println("\tThe postfix expression is: " + postFix);
-                System.out.println("\tThe answer to the expression is: " + result + "\n");
+                a.evaluateRPN(postFix);
                 
-            } else {
+                //If the stack is empty or has more than 1 operand then the result is unreliable
+                //Therefore the Stack should be size 1 as in having 1 element and if so then it gets popped
+                if(a.getResult().size() == 1){
+                    System.out.println("\tThe result of the expression: " + a.getResult().pop());
+                    System.out.println("\tThe result is reliable\n");
+                }else{
+                    System.out.println("The result is unreliable\n");
+                }         
+            }else{
                 System.out.println(counter + ". Expression " + expression + " is not balanced\n");
             }
+            
             System.out.println("====================================================================\n");
         }                
     }    
