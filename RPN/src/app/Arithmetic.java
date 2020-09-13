@@ -83,9 +83,9 @@ public class Arithmetic {
                 stack.push(element);
             }else if(element.equals(")")){
                 while(!stack.isEmpty()){
-                    String t = stack.pop();
-                    if(!t.equals("(")){
-                        postFix += t + " ";
+                    String topMost = stack.pop(); //it will pop the stack until reaching the first "("
+                    if(!topMost.equals("(")){
+                        postFix += topMost + " ";
                     }else{
                         break;
                     }
@@ -107,17 +107,17 @@ public class Arithmetic {
                     stack.push(element);
                 }else{
                     while(!stack.isEmpty()){
-                        String t = stack.pop();
-                        if(t.equals("(")){
-                            stack.push(t);
+                        String topMost = stack.pop(); //the top of the Stack.  if it is a"(" 
+                        if(topMost.equals("(")){      //it will push it back along with the scanned element
+                            stack.push(topMost);
                             break;
-                        }else if(t.equals("+") || t.equals("-") || t.equals("*")
-                                || t.equals("/") || t.equals("%")){
-                            if(precedence(t) < precedence(element)){
-                                stack.push(t);
+                        }else if(topMost.equals("+") || topMost.equals("-") || topMost.equals("*")
+                                || topMost.equals("/") || topMost.equals("%")){
+                            if(precedence(topMost) < precedence(element)){
+                                stack.push(topMost);
                                 break;
                             }else{
-                                postFix += t + " ";
+                                postFix += topMost + " ";
                             }
                         }
                     }
