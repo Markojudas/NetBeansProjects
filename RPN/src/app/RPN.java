@@ -21,7 +21,7 @@ public class RPN {
     public static void main(String[] args) {
         
         //Array of Strings with the given arithmetic expression
-        String s[] =    {"5 + ) * ( 2",
+        String[] s =    {"5 + ) * ( 2",
                         "2 + ( -3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20 ) ) - 25",
@@ -30,7 +30,7 @@ public class RPN {
                         "( 30 * ( 100 - 4 ) + ( 20 / 20 - 5 ) + 65",
                         "( 50 + 100 ) / ( ( 15 - 20 ) * 25 )"
                         };
-        
+
         //declaring & initiating a counter for output purposes
         int counter =0;
                 
