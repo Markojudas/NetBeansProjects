@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RPN:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/RPN_jar</output-path>
+    <root id="archive" name="RPN.jar">
+      <element id="module-output" name="RPN" />
+    </root>
+  </artifact>
+</component>
