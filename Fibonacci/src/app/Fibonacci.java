@@ -11,8 +11,8 @@ public class Fibonacci {
     public static void main(String[] args) {
         
 
-        for (int n = 1; n <=20; n++){
-            if(n != 20){
+        for (int n = 1; n <=50; n++){
+            if(n != 50){
                 System.out.print(fib(n) + ", ");
             }else{
                 System.out.println(fib(n));
