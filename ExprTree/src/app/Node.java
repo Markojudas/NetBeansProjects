@@ -2,17 +2,17 @@ package app;
 
 public class Node {
     
-    private char data;
+    private char node;
     private Node left;
     private Node right;
     
 
     public char getData() {
-        return data;
+        return node;
     }
 
     public void setData(char data) {
-        this.data = data;
+        this.node = data;
     }
 
     public Node getLeft() {
@@ -37,7 +37,7 @@ public class Node {
             System.out.print("( ");
             left.traverseInOrder();
         }
-        System.out.print(data + " ");
+        System.out.print(node + " ");
         if (right != null){
             right.traverseInOrder();
             System.out.print(") ");
@@ -52,7 +52,7 @@ public class Node {
         if (right != null){
             right.traversePostOrder();
         }
-        System.out.print(data + " ");        
+        System.out.print(node + " ");        
     }
    
     
