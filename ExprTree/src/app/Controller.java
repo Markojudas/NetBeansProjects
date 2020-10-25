@@ -29,16 +29,16 @@ public class Controller {
             if(tree.isBalanced(expression)){
             tree.constructTree();
             
-            System.out.println("======================================================================");
-            System.out.println("Expression #:" + counter);
-            System.out.println("======================================================================");
-            System.out.println("");
-            System.out.print("Original: ");
-            tree.traverseInOrder();
-            System.out.println("");
-            System.out.print("Post Order: ");
-            tree.traversePostOrder();
-            System.out.println("");
+                System.out.println("======================================================================");
+                System.out.println("Expression #:" + counter);
+                System.out.println("======================================================================");
+                System.out.println("");
+                System.out.print("Original: ");
+                tree.traverseInOrder();
+                System.out.println("");
+                System.out.print("Post Order: ");
+                tree.traversePostOrder();
+                System.out.println("");
             }
             else{
                 System.out.println("==================================================================");

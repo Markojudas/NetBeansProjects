@@ -21,20 +21,12 @@ public class ExprTree {
         
         boolean isBalanced = false;
         
-        //Creating a stack to help with checking whether it is balanced or not
         Stack<Character> stack = new Stack<>();
         
-        //Reading the string one character at a time
-        //Creating another string storing each character of the input string at the time
-        //if the string doesn't have any parenthesis then the expression is already balanced
         if(inFix.contains("(") || inFix.contains(")")){    
         for(int i=0; i < inFix.length(); i++){
             char exp = inFix.charAt(i);
             
-            //if statements to test the characters
-            //it will push onto the stack a left paranthesis "(" 
-            //it will then pop the stack once a right parenthesis ")" is encountered
-            //it will determine whether the expression is properly formed.
             if(exp == '('){
                 stack.push(exp);
             }else if(exp == ')'){
@@ -45,7 +37,7 @@ public class ExprTree {
                     isBalanced = false;
                 }                  
             }
-            if(!stack.isEmpty()){ //if the stack is not at the end of the reading then it is not balanced
+            if(!stack.isEmpty()){ 
                 isBalanced = false;
             }
         }
