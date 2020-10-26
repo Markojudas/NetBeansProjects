@@ -3,3 +3,4 @@
 ZIP/
 *.properties
 
+/HelloWorld/nbproject/private/
