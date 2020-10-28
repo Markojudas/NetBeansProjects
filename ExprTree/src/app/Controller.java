@@ -3,7 +3,7 @@ Author: Jose R Hernandez
 Assignment: 2
 
 Course: Data Structures; Fall 2020
-instructor: Jocyln Smith
+instructor: Joslyn Smith
 
 This program is repeating Assignment 1 where I am converting a inFix expression 
 and converting it into postFix or RPN using stack. Here we are using the
@@ -14,6 +14,7 @@ parentheses. If the expression is balanced it will construct a binary tree.
 
 Once the tree is built, it will traverse the tree in post order to get the postFix expression.
 It will also then evaluate the expression.
+
 */
 
 package app;
@@ -26,7 +27,7 @@ public class Controller {
         
        
         String[] expressions = {" 5 + ) * ( 2 ",
-                        "2 + ( 3 * 5 )",
+                        "2 + ( -3 * 5 )",
                         "( ( 2 + 3 ) * 5 ) * 8",
                         "5 * 10 + ( 15 - 20 ) ) - 25",
                         "5 + ( 5 * 10 + ( 15 - 20 ) - 25 ) * 9",
@@ -39,29 +40,27 @@ public class Controller {
         int counter = 0;
         
         for (String expression : expressions) {
-            ExprTree tree = new ExprTree(expression);
+            ExpressionTree tree = new ExpressionTree(expression);
             counter++;
             
             
             if(tree.isBalanced(expression)){
+                
+                tree.makeTree();
                   
                 System.out.println("======================================================================");
                 System.out.println("Expression #: " + counter);
                 System.out.println("======================================================================");
                 System.out.println("");
-                System.out.print("Original: " + expression);
-                System.out.println("");
-                System.out.print("Post Order: ");
-                System.out.println(tree.getPostFixed());
-                System.out.print("Result: ");
-                System.out.println(tree.evaluteExpression());
-                System.out.println("");
+                System.out.println("Original: " + expression);
+                System.out.println("Post Order: " + tree.getPostFixed());
+                System.out.println("Result: " + tree.evaluteExpression() + "\n");
             }
             else{
-                System.out.println("==================================================================");
-                System.out.println("Expression #: " + counter + " is not balanced");
-                System.out.println("==================================================================");
-                System.out.println("");
+                System.out.println("======================================================================");
+                System.out.println("Expression #: " + counter + " is not balanced\n");
+                System.out.println("Original: " + expression);
+                System.out.println("======================================================================\n");
             }
         }
     }    
