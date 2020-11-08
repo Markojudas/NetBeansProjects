@@ -16,10 +16,11 @@ public class TreeNode {
     private TreeNode rightChild;
 
     public void insert(int value){
-        if (value == data){
+        if (value == data){ //checks for duplicate
             return;
         }
-
+        
+        //populates the tree checking 
         if (value < data){
             if (leftChild == null){
                 leftChild = new TreeNode(value);

@@ -3,4 +3,9 @@
 ZIP/
 *.properties
 
+<<<<<<< HEAD
 /ExprTree/nbproject/private/
+=======
+/HelloWorld/nbproject/private/
+/JavaApplication46/nbproject/private/
+>>>>>>> cfcc3e98d4a36df6ffb0cdca1ce573fc70afd5dc
