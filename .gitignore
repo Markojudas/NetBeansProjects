@@ -3,3 +3,4 @@
 ZIP/
 *.properties
 
+/ExprTree/nbproject/private/
