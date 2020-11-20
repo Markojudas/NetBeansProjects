@@ -3,13 +3,17 @@ package app;
 //Node for the linkedList
 public class CustomerNode {
     
-    public Customer cust;
-    CustomerNode next;
+    public String key;
+    public Customer customer;
 
-    public CustomerNode(Customer cust) {
-        this.cust = cust;
-        next = null;
+    public CustomerNode(String key, Customer customer) {
+        this.key = key;
+        this.customer = customer;
     }
+    
+    
+
+
 
     
     

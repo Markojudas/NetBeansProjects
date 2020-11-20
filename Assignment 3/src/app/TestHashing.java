@@ -16,26 +16,62 @@ The program will be able to:
 */
 package app;
 //this is the main/test class
-public class TestHashing extends PhoneNumber {
+public class TestHashing {
 
     public static void main(String[] args) {
         
-        Customer customer1 = new Customer("Jose Hernandez", "22 Acacia Avenue", "3057166694");
-        Customer customer2 = new Customer("Aiorius Stormlord", "53rd St 3rd Ave", "7183457689");
-        Customer customer3 = new Customer("Largetha Lothbrok", "Somewhere in Valhalla", "7864786532");
-        Customer customer4 = new Customer("Cassandra Lightdimmer", "Around The Block", "9548769899");
-        Customer customer5 = new Customer("Michael Kiske", "Future World Ave", "4675434498");
+        String phone1 = "(305)716-6694";
+        Customer customer1 = new Customer("Jose Hernandez", "22 Acacia Avenue", phone1);
+        
+        String phone2 = "(718)345-7689";
+        Customer customer2 = new Customer("Aiorius Stormlord", "53rd St 3rd Ave", phone2);
+
+        String phone3 = "(786)478-6532";        
+        Customer customer3 = new Customer("Largetha Lothbrok", "Somewhere in Valhalla", phone3);
+        
+        String phone4 = "(954)876-9899";
+        Customer customer4 = new Customer("Cassandra Lightdimmer", "Around The Block", phone4);
+        
+
+        
         CustomerHashing ht = new CustomerHashing();
         
-        ht.put("6694", customer1);
-        ht.put("7689", customer2);
-        ht.put("6532", customer3);
-        ht.put("9899", customer4);
-        //ht.put("", customer5);
-               
-       ht.printTable();
+        //adding the customers
+        ht.put(phone1, customer1);
+        ht.put(phone2, customer2);
+        ht.put(phone3, customer3);
+        ht.put(phone4, customer4);
+             
+        //printing the hashtable with the original customers
+        
+        System.out.println("==================================================");
+        System.out.println("BUILDING AND PRINTING THE HASHTABLE");
+        System.out.println("==================================================");
+        ht.printTable();
+        System.out.println("==================================================");
+        System.out.println("CAUSING A COLLISION & REPRETING THE TABLE");
+        System.out.println("==================================================");
+        
+        String phone5 = "(467)543-4498";        
+        Customer customer5 = new Customer("Michael Kiske", "Future World Ave", phone5);       
+        
+        ht.put(phone5, customer5);
+        
+        ht.printTable();      
+        
+        System.out.println("===================================================");
+        System.out.println("SEARCH FOR A CUSTOMER");
+        System.out.println("===================================================");
+        System.out.println("Searching for Largetha:\n\n" + ht.get(phone3));
+        System.out.println("===================================================");
+        
+        System.out.println("DELETING CASSANDRA & REPRINTING THE TABLE");
+        System.out.println("===================================================");
+        ht.delete(phone5);
+        ht.printTable();
         
         
-    }
+        
+    }   
     
 }

@@ -2,7 +2,7 @@ package app;
 
 //this is the data class
 
-public class Customer extends PhoneNumber {
+public class Customer {
     
     public String name;
     private String address;
@@ -33,7 +33,7 @@ public class Customer extends PhoneNumber {
 
     @Override
     public String toString() {
-        return "Customer{" + "name=" + name + ", address=" + address + ", phone=" + phone + '}';
+        return "Customer: " + name + "\n" + "Address: " + address + "\n" + "Phone Number: " + phone + "\n";
     }
     
     
