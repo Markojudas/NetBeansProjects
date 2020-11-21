@@ -30,10 +30,11 @@ public class Customer {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
+    
+    //overridden toString method to display the created customer
     @Override
     public String toString() {
-        return "Customer: " + name + "\n" + "Address: " + address + "\n" + "Phone Number: " + phone + "\n";
+        return "Customer: \t" + name + "\n" + "Address: \t" + address + "\n" + "Phone Number: \t" + phone + "\n";
     }
     
     
