@@ -38,23 +38,6 @@ public class Main {
 
     }
 
-    public static void printArray(){
-
-        System.out.print("{ ");
-        for (int i = 0; i < intArray.length; i++){
-            int j = intArray[i];
-
-            if(i != (intArray.length - 1)){
-                System.out.print(j + ", ");
-            }
-            else{
-                System.out.print(j);
-            }
-        }
-        System.out.println(" }");
-
-    }
-
     public static void merge(int[] input, int start, int mid, int end){
 
         if (input[mid - 1] <= input[mid]){
@@ -73,6 +56,23 @@ public class Main {
         System.arraycopy(input, i, input, start + tempIndex, mid - i);
         System.arraycopy(temp, 0, input, start, tempIndex);
 
-    }              
+    }
+    
+    public static void printArray(){
+
+        System.out.print("{ ");
+        for (int i = 0; i < intArray.length; i++){
+            int j = intArray[i];
+
+            if(i != (intArray.length - 1)){
+                System.out.print(j + ", ");
+            }
+            else{
+                System.out.print(j);
+            }
+        }
+        System.out.println(" }");
+
+    }
     
 }
