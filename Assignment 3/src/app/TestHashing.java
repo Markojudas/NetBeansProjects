@@ -74,11 +74,12 @@ public class TestHashing {
         System.out.println("===================================================");
         System.out.println("SEARCH FOR A CUSTOMER");
         System.out.println("===================================================");
-        System.out.println("Searching for Largetha:\n\n" + ht.search(phone3));
+        System.out.println(ht.search(phone3));
+        System.out.println(ht.search(phone5));
         System.out.println("===================================================");
         
         //deleting a customer from the table & printing the table again
-        System.out.println("DELETING CASSANDRA & REPRINTING THE TABLE");
+        System.out.println("DELETING A CUSTOMER & REPRINTING THE TABLE");
         System.out.println("===================================================");
         ht.delete(phone1);
         ht.printTable();

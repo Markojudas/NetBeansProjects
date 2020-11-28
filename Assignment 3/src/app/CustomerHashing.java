@@ -25,9 +25,9 @@ public class CustomerHashing {
     //it then adds the a new CustomerNode (the customer created with the key and value)
     //to the LinkedList at the correspodning index (set by the hashedKey)
     public void put(String key, Customer cust){
-        int hashedKey = hashingCode(key);
+        int index = hashingCode(key);
         
-        table[hashedKey].add(new CustomerNode(key, cust));
+        table[index].add(new CustomerNode(key, cust));
     }
     
     //This is the get() method; it accepts the Key to search for a specific customer
@@ -37,22 +37,23 @@ public class CustomerHashing {
     //whose key equals the key used to call this method; then we have found the desired customer
     //if not; it returns null
     public Customer search(String key){
-        int hashedKey = hashingCode(key);
+        int index = hashingCode(key);
         
-        ListIterator<CustomerNode> iterator = table[hashedKey].listIterator();
+        ListIterator<CustomerNode> iterator = table[index].listIterator();
         
         CustomerNode cust = null;
         while(iterator.hasNext()){
             cust = iterator.next();
             
             if(cust.key.equals(key)){
+                System.out.println("**Customer " + cust.customer.name + " found at index " + index + "**\n");
                 return cust.customer;
             }            
         }
         return null;        
     }
     
-    //This is a smiliar code as the get() method. However it keeps track of the index
+    //This is a smiliar code as the search() method. However it keeps track of the index
     //the desired customer is stored. The index variable is initialized at -1 becuase
     //the .next() would be index 0 and a customer could be stored at that index
     //the while loop breaks once we have found the desired customer index or we have iterated
@@ -60,15 +61,15 @@ public class CustomerHashing {
     //if the Customer was not found then it returns null
     //if the Customer is found it calls the remove() the index the customer is located
     public Customer delete(String key){
-        int hashedKey = hashingCode(key);
+        int index = hashingCode(key);
         
-        ListIterator<CustomerNode> iterator = table[hashedKey].listIterator();
+        ListIterator<CustomerNode> iterator = table[index].listIterator();
         
         CustomerNode cust = null;
-        int index = -1;
+        int position = -1;
         while(iterator.hasNext()){
             cust = iterator.next();
-            index++;
+            position++;
             if(cust.key.equals(key)){
                 break;
             }
@@ -77,7 +78,8 @@ public class CustomerHashing {
         if (cust == null){
             return null;
         }else{
-            table[hashedKey].remove(index);
+            table[index].remove(position);
+            System.out.println("**Deleting " + cust.customer.name + " from index " + index + "**\n");
             return cust.customer;
         }        
     }
@@ -87,7 +89,7 @@ public class CustomerHashing {
         
         for(int i = 0; i < table.length; i++){
             if (table[i].isEmpty()){
-                System.out.println("INDEX " + i + ": \tEMPTY\n");
+                System.out.println("INDEX " + i + ": \tEMPTY SLOT\n");
             }
             else{
                 System.out.println("INDEX " + i + ": ");
