@@ -10,8 +10,8 @@ method and printing the now sorted array.
 
 the Merge Sort algorithm is divided in 2 methods:
 
-1st: Divides the array into left and right array
-until each one has only 1 element. An array with 1 element is already sorted as it is the only element in the array.
+1st: Divides the array into left and right partitions
+until each one has only 1 element. A partition with 1 element is already sorted as it is the only element in the array.
 This is done recursively.
 
 2nd: It merges the sorted arrays in the proper order 
