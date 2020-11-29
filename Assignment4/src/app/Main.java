@@ -1,3 +1,22 @@
+/*
+Programmer: Jose R Hernandez
+Course: Data Structures COP3530 RVC 1208
+Instructor: Joclyn Smith
+Assignment 4: Merge Sort
+
+This program implements the Merge Sort algorithm to sort an unsorted algorithm.
+It first prints out the unsorted algorithm and then it calls the mergeSort()
+method and printing the now sorted array.
+
+the Merge Sort algorithm is divided in 2 methods:
+
+1st: Divides the array into left and right array
+until each one has only 1 element. An array with 1 element is already sorted as it is the only element in the array.
+This is done recursively.
+
+2nd: It merges the sorted arrays in the proper order 
+*/
+
 package app;
 
 public class Main {
@@ -22,14 +41,16 @@ public class Main {
         System.out.println();
                 
     }
-
-
+    //1st method for the merge sort algorithm
     public static void mergeSort(int[] input, int start, int end){
-
+        
+        //if the array only has 1 element then nothing needs to be done.
+        //this is also works as the base case of the recursion
         if (end - start < 2){
             return;
         }
-
+        
+        //recursively dividing the array into partitions
         int mid = (start + end) / 2;
         mergeSort(input, start, mid);
         mergeSort(input, mid, end);
@@ -58,6 +79,8 @@ public class Main {
 
     }
     
+    //simple printArray() method to print the array
+    //I have added an if-else statement for display purposes    
     public static void printArray(){
 
         System.out.print("{ ");
