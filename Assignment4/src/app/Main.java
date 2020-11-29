@@ -50,7 +50,9 @@ public class Main {
             return;
         }
         
-        //recursively dividing the array into partitions
+        //recursively dividing the array into partitions, left and right
+        //Left is from the start to the mid; the mid is one more than the index
+        //Right is from the mid to the end; the end is one more than the index
         int mid = (start + end) / 2;
         mergeSort(input, start, mid);
         mergeSort(input, mid, end);
@@ -58,22 +60,35 @@ public class Main {
         merge(input, start, mid, end);
 
     }
-
+    //Method to compare using a temp array to hold the value
+    //it then copies the value into the the main array once they are in their
+    //proper sorted order.
     public static void merge(int[] input, int start, int mid, int end){
-
+        
+        //if element left of the mid is less than the mid then it's already sorted
         if (input[mid - 1] <= input[mid]){
             return;
         }
-
+        //if not using variables i and j to hold the start and the mid for comparison
+        //using also a tempIndex variable to keep track of the indexes. 
+        //initializing a temp Array big enough to hold the indexes we are handling
         int i = start;
         int j = mid;
         int tempIndex = 0;
 
         int[] temp = new int[end - start];
+        //this is where populate the temp array. While 
+        //the Start variable is less than the Mid AND if the mid is less than the End
+        //it determines if the element at index Start is less or equal to the element
+        //in index Mid; if so the tempIndex in the temp array is populated with the input
+        //of Start; if not with the input of Mid. i and j are incremented accordingly
+        //to keep traversing.
         while ( i < mid && j < end){
             temp[tempIndex++] = input[i] <= input[j] ? input[i++] : input[j++];
         }
-
+        
+        //here we are copying/updating the array with the sorted elements
+        //doing the actual merging of the broken left & right partitions.
         System.arraycopy(input, i, input, start + tempIndex, mid - i);
         System.arraycopy(temp, 0, input, start, tempIndex);
 
