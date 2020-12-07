@@ -1,7 +1,7 @@
 /*
 Programmer: Jose R Hernandez
 Course: Data Structures COP3530 RVC 1208
-Instructor: Joclyn Smith
+Instructor: Joslyn Smith
 Assignment 4: Merge Sort
 
 This program implements the Merge Sort algorithm to sort an unsorted algorithm.
@@ -89,6 +89,9 @@ public class Main {
         
         //here we are copying/updating the array with the sorted elements
         //doing the actual merging of the broken left & right partitions.
+        //when there are elements left in the right partition then it is already sorted
+        //when there are elements left in the left partition those are then sorted
+        //the sorted element are then copied to the original/input
         System.arraycopy(input, i, input, start + tempIndex, mid - i);
         System.arraycopy(temp, 0, input, start, tempIndex);
 
