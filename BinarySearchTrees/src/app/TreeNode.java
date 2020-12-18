@@ -43,6 +43,7 @@ public class TreeNode {
         if (leftChild != null){
             leftChild.traverseInOrder();
         }
+            
            System.out.print(data + ", ");
         if (rightChild != null){
             rightChild.traverseInOrder();
