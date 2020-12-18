@@ -27,13 +27,7 @@ public class BubbleSort {
         System.out.println("==================================================");
         System.out.println("UNSORTED ARRAY");
         System.out.println("==================================================\n");
-        for(int i = 0; i < intArray.length; i++){
-            if(i != intArray.length - 1){
-                System.out.print(intArray[i] + ", ");
-            }else{
-                System.out.print(intArray[i] + ". ");
-            }
-        }
+        printArray(intArray);
         System.out.println();
         
         //implementing ascending sorted order
@@ -49,16 +43,10 @@ public class BubbleSort {
         }
         
         //print sorted array
-        System.out.println("\n===================================================");
+        System.out.println("==================================================");
         System.out.println("SORTED ARRAY");
-        System.out.println("=====================================================\n");
-        for(int i = 0; i < intArray.length; i++){
-            if(i != intArray.length - 1){
-                System.out.print(intArray[i] + ", ");
-            }else{
-                System.out.print(intArray[i] + ". ");
-            }
-        }
+        System.out.println("==================================================\n");
+        printArray(intArray);
         System.out.println();
     }
     
@@ -81,4 +69,14 @@ public class BubbleSort {
         
     }
     
+    public static void printArray(int[] array){
+        
+        for(int i = 0; i < array.length; i++){
+            if(i != array.length - 1){
+                System.out.print(array[i] + ", ");
+            }else{
+                System.out.print(array[i] + ". ");
+            }
+        }               
+    }    
 }
