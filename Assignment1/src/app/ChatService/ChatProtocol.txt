@@ -1,0 +1,20 @@
+ULTIMATE CHAT ROOM!
+
+Assignment 1
+COP 4338 - Systems Programming - Spring 2021 - U01 1211
+Instructor: Kianoush Gholamiboroujeni
+Programmer: Jose R Hernandez
+
+CHAT SERVER PROTOCOLS:
+
+CLIENT REQUEST					SERVER RESPONSE  			     		MEANING
+#login x						if 4 <= x <= 10 & x is unique			logs in the user to the chat server with an chosen uniquee username as the user name; adds user to server list 
+								sets login as x                          
+
+#status							The clients currently logged in			Displays the current users logged in the server in order
+
+#logoff							None									Disconnects the user & removes it from the chat server list
+								
+N								N										N is displayed for all logged on connections. 
+
+									
