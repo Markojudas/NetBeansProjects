@@ -156,15 +156,17 @@ public class ServerUser implements Runnable{
                         else if("#join".equalsIgnoreCase(cmd)){
                             doJoinRoom(tokens);
                         }
-                        else if((cmd.charAt(0) == '@') && (tokens.length >= 2)){
+                        else if(cmd.length() > 0 && cmd.charAt(0) == '@'){
                             sendMsgToRoom(tokens);
                         }
                         else if("#leave".equalsIgnoreCase(cmd)){
                             doLeave(tokens);
                         }
-                        else{
-                            String msg = login + ": " + line;
-                            sendMsg(msg);
+                        else{                            
+                            if(line.length() >0){
+                                String msg = login + ": " + line;
+                                sendMsg(msg);
+                            }
                         }                        
                     }
                     else{
@@ -250,11 +252,9 @@ public class ServerUser implements Runnable{
     
     //this method is just to display messages
     public void send(String msg) throws IOException{
-        if(login != null){
-            //outputStream.write(msg.getBytes());
-            out.println(msg);
-            out.flush();
-        }
+        
+        out.println(msg);
+        out.flush();
     }
     
     private void doLogoff() throws IOException {
@@ -332,50 +332,81 @@ public class ServerUser implements Runnable{
     }
     
     private void doJoinRoom(String[] tokens) throws IOException {
-        if(tokens.length > 1){
-            String chatRoom = tokens[1];
-            rooms.add(chatRoom.toLowerCase()); //changing the name of the room to lowercase to avoid case sensitivity
-            out.println("\nYOU HAVE JOINED " + chatRoom.toUpperCase());
-            out.flush();
-            String msg = "TO SEND MESSAGES TO ROOM: @" + chatRoom.toUpperCase();
-            String msg2 = "TO LEAVE ROOM: #leave " + chatRoom.toUpperCase() + "\n";
-            send(msg);
-            send(msg2);
-        }
+        chatLock.lock();
+            try{        
+                if(tokens.length > 1){                    
+                    String chatRoom = tokens[1];
+                    if(chatRoom.length() >= 3 && chatRoom.length() <= 6){
+                        rooms.add(chatRoom.toLowerCase()); //changing the name of the room to lowercase to avoid case sensitivity
+                        out.println("\nYOU HAVE JOINED " + chatRoom.toUpperCase());
+                        out.flush();
+                        String msg = "TO SEND MESSAGES TO ROOM: @" + chatRoom.toUpperCase();
+                        String msg2 = "TO LEAVE ROOM: #leave " + chatRoom.toUpperCase() + "\n";
+                        send(msg);
+                        send(msg2);
+                    }else{
+                        String msg ="\nCHAT ROOM NAME MUST BE 3-6 CHARACTERS LONG! TRY AGAIN\n";
+                        send(msg);
+                    }
+                    chatReady.signalAll();
+                }else{
+                    String msg ="\nERROR! PLEASE ENTER CHAT ROOM NAME\n";
+                    send(msg);
+                }
+            }finally{
+                chatLock.unlock();
+            }
     }
     
     private void doLeave(String[] tokens) throws IOException{
-        if((tokens.length > 1) && (hasJoinedRoom(tokens[1]))){
-            String chatRoom = tokens[1];
-            rooms.remove(chatRoom.toLowerCase());
-            String msg = "\nYOU HAVE LEFT " + chatRoom.toUpperCase() + "\n";
-            send(msg);            
-        }else{
-            String msg = "\nYOU ARE NOT IN THIS ROOM\n";
-            send(msg);
+        chatLock.lock();
+        try{
+            if((tokens.length > 1) && (hasJoinedRoom(tokens[1]))){
+                String chatRoom = tokens[1];
+                rooms.remove(chatRoom.toLowerCase());
+                String msg = "\nYOU HAVE LEFT " + chatRoom.toUpperCase() + "\n";
+                send(msg);            
+            }else{
+                String msg = "\nYOU ARE NOT IN THIS ROOM\n";
+                send(msg);
+            }
+            chatReady.signalAll();
+        }finally{
+            chatLock.unlock();
         }
     }
 
     private void sendMsgToRoom(String[] tokens) throws IOException {
-        String chatRoom = tokens[0].substring(1); //the first (0) character is @ it assignes character 1 and beyond as the chatroom
-        String msg = "";
+        if(tokens.length >= 2){
+            String chatRoom = tokens[0].substring(1); //the first (0) character is @ it assignes character 1 and beyond as the chatroom
+            String msg = "";
         
-        for(int i = 1; i < tokens.length; i++){
-            msg += tokens[i] + " "; 
-        }
+            for(int i = 1; i < tokens.length; i++){
+                msg += tokens[i] + " "; 
+            }
         
-        if(hasJoinedRoom(chatRoom)){
-            List<ServerUser> users = server.getUserList();
-            for(ServerUser user : users){
+            if(hasJoinedRoom(chatRoom)){
+                chatLock.lock();
+                try{
+                    List<ServerUser> users = userList;
+                    for(ServerUser user : users){
             
-                if(user.hasJoinedRoom(chatRoom)){
-                    String sendMsg = login + " @" + chatRoom + ": " + msg;
-                    user.send(sendMsg);
+                        if(user.hasJoinedRoom(chatRoom)){
+                            String sendMsg = login + " @" + chatRoom + ": " + msg;
+                            user.send(sendMsg);
+                        }
+                    }
+                    chatReady.signalAll();
+                }finally{
+                    chatLock.unlock();
                 }
+            }else{
+                String errorMsg = "\nYOU HAVEN'T JOINED " + chatRoom.toUpperCase() + "\n";
+                send(errorMsg);
             }
         }else{
-            String errorMsg = "\nYOU HAVEN'T JOINED " + chatRoom.toUpperCase() + "\n";
-            send(errorMsg);
-        }        
+            String msg = "ERROR SENDING MESSAGE!\n";
+            send(msg);
+        }
     }
 }
