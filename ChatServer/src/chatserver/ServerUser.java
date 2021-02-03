@@ -58,13 +58,13 @@ public class ServerUser implements Runnable{
     @Override
     public void run(){
        try{
-            handleClientSocket();
+            beUserSocket();
         }
         catch(IOException | InterruptedException e){
         }     
     }
     
-    private void handleClientSocket() throws IOException, InterruptedException {
+    private void beUserSocket() throws IOException, InterruptedException {
 
         InputStream inputStream = userSocket.getInputStream();
         outputStream = userSocket.getOutputStream();
@@ -156,7 +156,7 @@ public class ServerUser implements Runnable{
                         else if("#join".equalsIgnoreCase(cmd)){
                             doJoinRoom(tokens);
                         }
-                        else if(cmd.charAt(0) == '@'){
+                        else if((cmd.charAt(0) == '@') && (tokens.length >= 2)){
                             sendMsgToRoom(tokens);
                         }
                         else if("#leave".equalsIgnoreCase(cmd)){
@@ -357,7 +357,7 @@ public class ServerUser implements Runnable{
     }
 
     private void sendMsgToRoom(String[] tokens) throws IOException {
-        String chatRoom = tokens[0].substring(1);
+        String chatRoom = tokens[0].substring(1); //the first (0) character is @ it assignes character 1 and beyond as the chatroom
         String msg = "";
         
         for(int i = 1; i < tokens.length; i++){
@@ -374,9 +374,8 @@ public class ServerUser implements Runnable{
                 }
             }
         }else{
-            String errorMsg = "\nYOU HAVEN'T JOINED THE GROUP " + chatRoom.toUpperCase() + "\n";
+            String errorMsg = "\nYOU HAVEN'T JOINED " + chatRoom.toUpperCase() + "\n";
             send(errorMsg);
-        }
-        
+        }        
     }
 }
