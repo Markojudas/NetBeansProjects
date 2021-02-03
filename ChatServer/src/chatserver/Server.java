@@ -1,4 +1,10 @@
+/*
+Assignment 1
+COP 4338 - Systems Programming - Spring 2021 - U01 1211
+Instructor: Kianoush Gholamiboroujeni
+Programmer: Jose R Hernandez
 
+*/
 package chatserver;
 
 import java.io.IOException;
@@ -7,11 +13,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+This is the server that accepts connections from different users, creating new Threads for each new user
+*/
 
 public class Server implements Runnable {
 
     private final int serverPort;
-    private ArrayList<ServerUser> userList = new ArrayList<>();
+    private ArrayList<ServerUser> userList = new ArrayList<>(); //this is the Main List collecting logged on users
     
 
     public Server(int serverPort) {

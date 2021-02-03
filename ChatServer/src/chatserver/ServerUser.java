@@ -1,3 +1,10 @@
+/*
+Assignment 1
+COP 4338 - Systems Programming - Spring 2021 - U01 1211
+Instructor: Kianoush Gholamiboroujeni
+Programmer: Jose R Hernandez
+
+*/
 package chatserver;
 
 import java.io.BufferedReader;
@@ -12,14 +19,18 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.io.PrintWriter;
+import java.util.HashSet;
 
 
 /**
  * This class handles the socket (user connections)
  * The server accepts multiple connections with unique usernames
- * Commands are simply : #login, #status, #logoff
- * when a user logs in it announces that the user has logged on and it's added to collection of users
- * When a user logs off it announces that the user has disconnected the user is deleted from the collection of users
+ * Commands are simply : #login, #status, #dm, #logoff
+ * when a user logs in it announces that the user has logged on to all active users and it's added to collection of users
+ * When a user logs off it announces that the user has disconnected to all active users and the user is deleted from the collection of users
+ * The user is able to check who else is currently logged on
+ * The user is able to create and join rooms and send messages directly to that group once the user has joined
+ * the user is able to send Direct Messages to other active users
  */
 public class ServerUser implements Runnable{
     
@@ -31,6 +42,7 @@ public class ServerUser implements Runnable{
     private final List<ServerUser> userList;
     private final Lock chatLock;
     private final Condition chatReady;
+    private HashSet<String> rooms = new HashSet<>();
     
 
 
@@ -42,7 +54,7 @@ public class ServerUser implements Runnable{
         chatLock = new ReentrantLock();
         chatReady = chatLock.newCondition();
     }
-
+    
     @Override
     public void run(){
        try{
@@ -62,9 +74,9 @@ public class ServerUser implements Runnable{
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         
-        //outputStream.write("\n========== WELCOME TO THE ULTIMATE CHAT ROOM ==========\n\n".getBytes());
-        //outputStream.write("PLEASE CHOOSE A USERNAME: #login <username> (4 - 10 characters)\n".getBytes());
-        
+        //welcome message for when the user first connects to the server
+        //the server asks the user to select a username
+        //if the username is taken it will let the user know and ask to try again
         String welcomeMsg1 = "\n========== WELCOME TO THE ULTIMATE CHAT ROOM ==========\n";
         String welcomeMsg2 = "PLEASE CHOOSE A USERNAME: #login <username> (4 - 10 characters)";
         
@@ -73,14 +85,22 @@ public class ServerUser implements Runnable{
         out.flush();
         
             while((line = reader.readLine()) != null){
-                String[] tokens = line.split(" ");
+                String[] tokens = line.split(" ");   //here I am splitting the user input to make the commands
                 if (tokens != null && tokens.length > 0){
-                    String cmd = tokens[0];
+                    String cmd = tokens[0];  //the first token is the COMMAND
                     
+                    //The user can log off and is disconnected from the server
                     if ("#logoff".equalsIgnoreCase(cmd)){
                         doLogoff();
                         break;
                     }
+                        /*
+                        the user will select an username
+                        if the Main Server's List is of size 1 or more it means there are other logged on users
+                        if there are already users logged on the program creates another List and copies the Main Server's List.
+                        The program then checks using the new List to see if the username is already taken
+                        The program also checks if the user is already logged on; if so it will give an error if the user tries to log in again
+                        */    
                     else if("#login".equalsIgnoreCase(cmd)){
                         if(login == null){
                             chatLock.lock();
@@ -116,37 +136,40 @@ public class ServerUser implements Runnable{
                             out.println("\nYOU ARE ALREADY SIGNED IN\n");
                             out.flush();
                         }
-                    }    
-                    else if("#status".equalsIgnoreCase(cmd)){
-                        if(login != null){
-                            showUsers(out);
-                            out.println();
-                            out.flush();
-                            //outputStream.write("\n".getBytes());                
-                        }else{
-                            //outputStream.write("PLEASE LOGIN IN FIRST\n".getBytes());
-                            out.println("\nPLEASE LOGIN FIRST");
-                            out.println();
-                            out.flush();
-                        }
-                    }   
-                    else if("#dm".equalsIgnoreCase(cmd)){
-                        if(login != null){
-                            sendDM(tokens);
-                        }else{
-                            out.println("\nPLEASE LOGIN FIRST");
-                            out.flush();
-                        }    
                     }
-                    else{
-                        if(login != null){
+                    /*
+                    Here are the commands available once the user is logged on
+                    Check status: it checks the currently active users
+                    The user is able to send Direct Messages to an active user
+                    the user is able to create/join a room and send messages to that room
+                    the user is able to leave the room
+                    The user is able to send messages to all active users in the "main lobby"
+                    */
+                    else if(login != null){
+                        
+                        if("#dm".equalsIgnoreCase(cmd)){
+                            sendDM(tokens);
+                        }
+                        else if("#status".equalsIgnoreCase(cmd)){
+                            showUsers(out);                            
+                        }
+                        else if("#join".equalsIgnoreCase(cmd)){
+                            doJoinRoom(tokens);
+                        }
+                        else if(cmd.charAt(0) == '@'){
+                            sendMsgToRoom(tokens);
+                        }
+                        else if("#leave".equalsIgnoreCase(cmd)){
+                            doLeave(tokens);
+                        }
+                        else{
                             String msg = login + ": " + line;
                             sendMsg(msg);
-                        }else{
-                            //outputStream.write("PLEASE LOGIN IN FIRST\n".getBytes());
-                            out.println("\nPLEASE LOGIN FIRST");
-                            out.flush();
-                        }     
+                        }                        
+                    }
+                    else{
+                        out.println("\nPLEASE LOGIN FIRST\n");
+                        out.flush();
                     }
                 }    
             }       
@@ -157,6 +180,7 @@ public class ServerUser implements Runnable{
         return login;
     }
     
+    //broadcast messages to all active users in the main lobby
     public void sendMsg(String msg) throws IOException{           
         for(ServerUser worker : userList){
             worker.send(msg);
@@ -174,21 +198,24 @@ public class ServerUser implements Runnable{
         out.flush();
     }
     
+    //
     private void doLogin(PrintWriter out, String[] tokens) throws IOException{
 
         if(tokens.length == 2){
             String login = tokens[1];
             
             if ((login.length() >= 4) && (login.length() <= 10)){
-                //String msg = "\nLOGIN SUCESSFUL!!! YOU CAN NOW PARTICIPATE\nTO DISCONNECT: #logoff\nTO CHECK ONLINE USERS: #status\n\n";
-                //outputStream.write(msg.getBytes());
                 String msg1 = "LOGIN SUCCESSFUL!!! YOU CAN NOW PARTICIPATE!";
                 String msg2 = "TO DISCONNECT: #logoff";
                 String msg3 = "TO CHECK ONLINE USERS: #status";
+                String msg4 = "TO SEND DIRECT MESSAGES: #dm <username> <msg>";
+                String msg5 = "TO JOIN/CREATE ROOM: #join <roomName>";
                 out.println();
                 out.println(msg1);
                 out.println(msg2);
                 out.println(msg3);
+                out.println(msg4);
+                out.println(msg5);
                 out.println();
                 out.flush();
                 chatLock.lock();
@@ -202,8 +229,9 @@ public class ServerUser implements Runnable{
                 this.login = login;
                 System.out.println("User logged in: " + login);
 
-                //send other online users current user's status
-                String onlineMsg = login + " HAS COME ONLINE\n";
+                //Sending to all active users a message when the current user logs on
+                //the message is NOT shown for the current user
+                String onlineMsg = "\n" + login + " HAS COME ONLINE\n";
                 for(ServerUser worker : userList){
                     
                     if(!login.equals(worker.getLogin())){
@@ -220,6 +248,7 @@ public class ServerUser implements Runnable{
         }       
     }
     
+    //this method is just to display messages
     public void send(String msg) throws IOException{
         if(login != null){
             //outputStream.write(msg.getBytes());
@@ -227,7 +256,7 @@ public class ServerUser implements Runnable{
             out.flush();
         }
     }
-
+    
     private void doLogoff() throws IOException {
         
         chatLock.lock();
@@ -236,9 +265,10 @@ public class ServerUser implements Runnable{
             
             List<ServerUser> onlineUsers = userList;
             //send other online users current user's status
-            String onlineMsg = login + " HAS DISCONNECTED\n";
+            String onlineMsg = "\n" + login + " HAS DISCONNECTED\n";
             System.out.println("User logged off: " + login);
             
+            //shows message to all active users once the current user disconnects
             for(ServerUser user : onlineUsers){
                     
                 if(!login.equals(user.getLogin())){
@@ -259,6 +289,8 @@ public class ServerUser implements Runnable{
             String msg = "";
             boolean userFound = false;
             
+            //since the input are broken down to tokens
+            //the program concatenates beyond the 3rd token (index 2 and beyond)
             for(int i = 2; i < tokens.length; i++){
                 msg += tokens[i] + " ";
             }
@@ -279,7 +311,8 @@ public class ServerUser implements Runnable{
                             out.flush();
                         }
                     }else{
-                        if((!userFound) && endOfList == onlineUsers.size()){
+                        //if the DM recipient is not found the sender receives an error
+                        if(!userFound && endOfList == onlineUsers.size()){
                             out.println("\nUSER NOT FOUND\n");
                             out.flush();                            
                         }    
@@ -289,10 +322,61 @@ public class ServerUser implements Runnable{
             }
             finally{
                 chatLock.unlock();
-            }
+            }            
+        }        
+    }
+    
+    //boolean to check if the Room exists
+    public boolean hasJoinedRoom(String chatRoom){
+        return rooms.contains(chatRoom.toLowerCase());
+    }
+    
+    private void doJoinRoom(String[] tokens) throws IOException {
+        if(tokens.length > 1){
+            String chatRoom = tokens[1];
+            rooms.add(chatRoom.toLowerCase()); //changing the name of the room to lowercase to avoid case sensitivity
+            out.println("\nYOU HAVE JOINED " + chatRoom.toUpperCase());
+            out.flush();
+            String msg = "TO SEND MESSAGES TO ROOM: @" + chatRoom.toUpperCase();
+            String msg2 = "TO LEAVE ROOM: #leave " + chatRoom.toUpperCase() + "\n";
+            send(msg);
+            send(msg2);
+        }
+    }
+    
+    private void doLeave(String[] tokens) throws IOException{
+        if((tokens.length > 1) && (hasJoinedRoom(tokens[1]))){
+            String chatRoom = tokens[1];
+            rooms.remove(chatRoom.toLowerCase());
+            String msg = "\nYOU HAVE LEFT " + chatRoom.toUpperCase() + "\n";
+            send(msg);            
+        }else{
+            String msg = "\nYOU ARE NOT IN THIS ROOM\n";
+            send(msg);
+        }
+    }
+
+    private void sendMsgToRoom(String[] tokens) throws IOException {
+        String chatRoom = tokens[0].substring(1);
+        String msg = "";
+        
+        for(int i = 1; i < tokens.length; i++){
+            msg += tokens[i] + " "; 
+        }
+        
+        if(hasJoinedRoom(chatRoom)){
+            List<ServerUser> users = server.getUserList();
+            for(ServerUser user : users){
             
+                if(user.hasJoinedRoom(chatRoom)){
+                    String sendMsg = login + " @" + chatRoom + ": " + msg;
+                    user.send(sendMsg);
+                }
+            }
+        }else{
+            String errorMsg = "\nYOU HAVEN'T JOINED THE GROUP " + chatRoom.toUpperCase() + "\n";
+            send(errorMsg);
         }
         
     }
-    
 }
