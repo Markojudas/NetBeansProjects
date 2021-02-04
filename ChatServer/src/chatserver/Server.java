@@ -38,12 +38,12 @@ public class Server implements Runnable {
             ServerSocket serverSocket = new ServerSocket(serverPort);
             while(true){                
                 System.out.println("ABOUT TO ACCEPT CLIENT CONNECTION...");
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("ACCEPTED CONNECTION FROM " + clientSocket);
+                Socket userSocket = serverSocket.accept();
+                System.out.println("ACCEPTED CONNECTION FROM " + userSocket);
 
-                    ServerUser worker = new ServerUser(this, clientSocket);
+                    ServerUser user = new ServerUser(this, userSocket);
                     //workerList.add(worker);
-                    Thread t = new Thread(worker);
+                    Thread t = new Thread(user);
                     t.start();
             }
         }
@@ -51,8 +51,8 @@ public class Server implements Runnable {
         }         
     }
 
-    void removeUser(ServerUser serverWorker) {
-        userList.remove(serverWorker);
+    void removeUser(ServerUser serverUser) {
+        userList.remove(serverUser);
        
     }
 }

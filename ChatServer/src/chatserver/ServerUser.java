@@ -72,7 +72,7 @@ public class ServerUser implements Runnable{
         out = new PrintWriter(outputStream);
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
+        String line; 
         
         //welcome message for when the user first connects to the server
         //the server asks the user to select a username
@@ -123,10 +123,10 @@ public class ServerUser implements Runnable{
                                         }
                                     }
                                     if(!nameIsTaken){
-                                        doLogin(out, tokens);
+                                        doLogin(tokens);
                                     }
                                 }else{
-                                    doLogin(out, tokens);                            
+                                    doLogin(tokens);                            
                                 }
                                 chatReady.signalAll();
                             }finally{
@@ -201,7 +201,7 @@ public class ServerUser implements Runnable{
     }
     
     //
-    private void doLogin(PrintWriter out, String[] tokens) throws IOException{
+    private void doLogin(String[] tokens) throws IOException{
 
         if(tokens.length == 2){
             String login = tokens[1];
