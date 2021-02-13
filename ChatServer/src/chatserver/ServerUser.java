@@ -405,7 +405,7 @@ public class ServerUser implements Runnable{
                 send(errorMsg);
             }
         }else{
-            String msg = "ERROR SENDING MESSAGE!\n";
+            String msg = "\nERROR SENDING MESSAGE!\n";
             send(msg);
         }
     }
